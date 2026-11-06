@@ -1,0 +1,55 @@
+_ > nanoagent.plugin.v0001.ManifestConfig:
+id: traffic-light-schedule-evaluator
+name: Traffic Light Schedule Evaluator
+version: 0.1.0
+status: ready
+spec: nanoagent.plugin/v0001
+
+runtime > nanoagent.plugin.v0001.RuntimeConfig:
+  type: mcp_stdio
+  command: [uv, run, --frozen, python, -m, plugin]
+
+permissions > nanoagent.plugin.v0001.PermissionsConfig:
+  network > nanoagent.plugin.v0001.NetworkConfig:
+    hosts: []
+  filesystem > nanoagent.plugin.v0001.FilesystemConfig:
+    write: [workspace]
+
+tools > dict[contract.Tool, nanoagent.plugin.v0001.ToolConfig]:
+  read_traffic_request:
+    description: Read the validated repeating signal schedules and vehicle arrivals.
+  write_traffic_evaluation:
+    description: Save the completed signal and next-crossing evaluation.
+
+tasks > dict[contract.Task, nanoagent.plugin.v0001.TaskConfig]:
+  evaluate-traffic-schedule:
+    description: Evaluate fixed repeating green-yellow-red schedules for timestamped vehicle arrivals and report each active signal plus the earliest legal crossing time.
+    runner: agent
+    tools: [read_traffic_request, write_traffic_evaluation]
+    reference: null
+    instructions: |-
+      First call read_traffic_request. Each intersection repeats its phases in
+      this order: green, yellow, red. cycle_start is a scenario time in whole
+      seconds at which green begins. The three positive durations are also in
+      whole seconds.
+
+      For each arrival, find its zero-based position in the intersection cycle:
+      (arrival_time - cycle_start) modulo
+      (green_seconds + yellow_seconds + red_seconds).
+
+      Green occupies positions from zero up to but not including
+      green_seconds. Yellow begins exactly at green_seconds and continues up to
+      but not including green_seconds + yellow_seconds. Red occupies the rest
+      of the cycle. Therefore a timestamp exactly on a boundary belongs to the
+      phase that starts at that timestamp.
+
+      A vehicle may cross only during green. For a green arrival,
+      next_crossing_time equals arrival_time and wait_seconds is zero. For a
+      yellow or red arrival, next_crossing_time is the start of the next cycle:
+      arrival_time + cycle_length - cycle_position. wait_seconds is
+      next_crossing_time - arrival_time.
+
+      Return one evaluation for every arrival, in the exact order supplied.
+      Copy each arrival_id, intersection_id, and arrival_time exactly. Use only
+      signal_color values green, yellow, or red. Then call
+      write_traffic_evaluation with the unchanged task and complete list.

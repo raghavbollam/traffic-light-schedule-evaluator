@@ -1,0 +1,15 @@
+_ > nanoagent.plugin.v0001.ProductConfig:
+tagline: "Evaluate repeating traffic signals and find when each vehicle may cross"
+
+summary: "Given one or more intersections with fixed green, yellow, and red durations plus timestamped vehicle arrivals, the agent determines the signal active at every arrival and the earliest time each vehicle may legally cross. A deterministic verifier independently repeats the modular cycle arithmetic and checks every result."
+
+highlights:
+  - "Offline and reproducible: schedules and arrivals are fully contained in the task input"
+  - "Multiple intersections with independent cycle starts and phase durations"
+  - "Exact phase-boundary behavior using whole-second modular arithmetic"
+  - "Independent all-or-nothing verification with arrival-specific mismatch diagnostics"
+
+steps:
+  - "Provide repeating green-yellow-red schedules and timestamped vehicle arrivals"
+  - "The agent evaluates each arrival and calculates any wait until the next green"
+  - "Review every signal color, crossing decision, and earliest crossing time"

@@ -1,0 +1,56 @@
+.traffic-report {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.traffic-summary {
+  margin: 0;
+  font-weight: 600;
+}
+
+.traffic-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.traffic-table th,
+.traffic-table td {
+  padding: 7px 9px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.traffic-table th {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.traffic-table .numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.signal {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.signal-green {
+  color: var(--ok);
+  background: var(--ok-soft);
+}
+
+.signal-yellow {
+  color: var(--warn);
+  background: var(--warn-soft);
+}
+
+.signal-red {
+  color: var(--bad);
+  background: var(--bad-soft);
+}

@@ -1,0 +1,40 @@
+{
+  "evaluations": [
+    {
+      "arrival_id": "car-green",
+      "intersection_id": "main-and-first",
+      "arrival_time": 12,
+      "signal_color": "green",
+      "may_cross": true,
+      "next_crossing_time": 12,
+      "wait_seconds": 0
+    },
+    {
+      "arrival_id": "car-yellow-boundary",
+      "intersection_id": "main-and-first",
+      "arrival_time": 30,
+      "signal_color": "yellow",
+      "may_cross": false,
+      "next_crossing_time": 60,
+      "wait_seconds": 30
+    },
+    {
+      "arrival_id": "car-red",
+      "intersection_id": "park-and-third",
+      "arrival_time": 22,
+      "signal_color": "red",
+      "may_cross": false,
+      "next_crossing_time": 30,
+      "wait_seconds": 8
+    },
+    {
+      "arrival_id": "car-next-green",
+      "intersection_id": "park-and-third",
+      "arrival_time": 30,
+      "signal_color": "green",
+      "may_cross": true,
+      "next_crossing_time": 30,
+      "wait_seconds": 0
+    }
+  ]
+}

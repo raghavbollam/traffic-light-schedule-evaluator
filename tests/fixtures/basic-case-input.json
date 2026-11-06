@@ -1,0 +1,40 @@
+{
+  "intersections": [
+    {
+      "intersection_id": "main-and-first",
+      "cycle_start": 0,
+      "green_seconds": 30,
+      "yellow_seconds": 5,
+      "red_seconds": 25
+    },
+    {
+      "intersection_id": "park-and-third",
+      "cycle_start": 10,
+      "green_seconds": 10,
+      "yellow_seconds": 2,
+      "red_seconds": 8
+    }
+  ],
+  "arrivals": [
+    {
+      "arrival_id": "car-green",
+      "intersection_id": "main-and-first",
+      "arrival_time": 12
+    },
+    {
+      "arrival_id": "car-yellow-boundary",
+      "intersection_id": "main-and-first",
+      "arrival_time": 30
+    },
+    {
+      "arrival_id": "car-red",
+      "intersection_id": "park-and-third",
+      "arrival_time": 22
+    },
+    {
+      "arrival_id": "car-next-green",
+      "intersection_id": "park-and-third",
+      "arrival_time": 30
+    }
+  ]
+}
