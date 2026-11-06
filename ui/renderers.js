@@ -1,48 +1,70 @@
-function element(tag, attributes = {}, children = []) {
-  const node = document.createElement(tag);
-  for (const [name, value] of Object.entries(attributes)) {
-    if (name === "className") node.className = value;
-    else node.setAttribute(name, value);
-  }
-  for (const child of children) {
-    node.append(child instanceof Node ? child : document.createTextNode(String(child)));
-  }
-  return node;
-}
+import { h, statusPill } from "./kit/components.js";
+
+const SIGNAL_TONE = {
+  green: "ok",
+  yellow: "warn",
+  red: "bad",
+};
 
 function renderEvaluation(value) {
   const evaluations = Array.isArray(value?.evaluations) ? value.evaluations : [];
-  const table = element("table", { className: "traffic-table" });
-  table.append(
-    element("thead", {}, [
-      element("tr", {}, ["Arrival", "Intersection", "Time", "Signal", "May cross", "Next green", "Wait"].map((label) => element("th", {}, [label]))),
-    ]),
+  const rows = evaluations.map((entry) =>
+    h(
+      "tr",
+      {},
+      h("td", { text: entry.arrival_id }),
+      h("td", { text: entry.intersection_id }),
+      h("td", { class: "numeric", text: String(entry.arrival_time) }),
+      h(
+        "td",
+        {},
+        statusPill(
+          entry.signal_color,
+          SIGNAL_TONE[entry.signal_color] ?? "info",
+        ),
+      ),
+      h("td", { text: entry.may_cross ? "Yes" : "No" }),
+      h("td", {
+        class: "numeric",
+        text: String(entry.next_crossing_time),
+      }),
+      h("td", {
+        class: "numeric",
+        text: `${entry.wait_seconds}s`,
+      }),
+    ),
   );
 
-  const body = element("tbody");
-  for (const entry of evaluations) {
-    body.append(
-      element("tr", {}, [
-        element("td", {}, [entry.arrival_id]),
-        element("td", {}, [entry.intersection_id]),
-        element("td", { className: "numeric" }, [entry.arrival_time]),
-        element("td", {}, [
-          element("span", { className: `signal signal-${entry.signal_color}` }, [entry.signal_color]),
-        ]),
-        element("td", {}, [entry.may_cross ? "Yes" : "No"]),
-        element("td", { className: "numeric" }, [entry.next_crossing_time]),
-        element("td", { className: "numeric" }, [`${entry.wait_seconds}s`]),
-      ]),
-    );
-  }
-  table.append(body);
-
-  return element("div", { className: "traffic-report" }, [
-    element("p", { className: "traffic-summary" }, [
-      `${evaluations.length} vehicle arrival${evaluations.length === 1 ? "" : "s"} evaluated`,
-    ]),
-    table,
-  ]);
+  return h(
+    "div",
+    { class: "traffic-report" },
+    h("p", {
+      class: "traffic-summary",
+      text: `${evaluations.length} vehicle arrival${
+        evaluations.length === 1 ? "" : "s"
+      } evaluated`,
+    }),
+    h(
+      "div",
+      { class: "traffic-table-wrap" },
+      h(
+        "table",
+        { class: "traffic-table" },
+        h(
+          "thead",
+          {},
+          h(
+            "tr",
+            {},
+            ["Arrival", "Intersection", "Time", "Signal", "May cross", "Next green", "Wait"].map(
+              (label) => h("th", { text: label }),
+            ),
+          ),
+        ),
+        h("tbody", {}, rows),
+      ),
+    ),
+  );
 }
 
 export default {

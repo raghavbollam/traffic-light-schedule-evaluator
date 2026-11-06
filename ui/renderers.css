@@ -9,6 +9,10 @@
   font-weight: 600;
 }
 
+.traffic-table-wrap {
+  overflow-x: auto;
+}
+
 .traffic-table {
   width: 100%;
   border-collapse: collapse;
@@ -30,27 +34,4 @@
 .traffic-table .numeric {
   text-align: right;
   font-variant-numeric: tabular-nums;
-}
-
-.signal {
-  display: inline-block;
-  padding: 2px 7px;
-  border-radius: 999px;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.signal-green {
-  color: var(--ok);
-  background: var(--ok-soft);
-}
-
-.signal-yellow {
-  color: var(--warn);
-  background: var(--warn-soft);
-}
-
-.signal-red {
-  color: var(--bad);
-  background: var(--bad-soft);
 }
